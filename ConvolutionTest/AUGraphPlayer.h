@@ -17,11 +17,21 @@
 typedef struct AUGraphPlayer
 {
 	AudioStreamBasicDescription inputFormat;
-	AudioFileID 				inputFile;
 	AUGraph 					graph;
-	AudioUnit 					fileAU;
+	AudioFileID 				inputFile_1;
+	AudioUnit 					fileAU_1;
+	AudioFileID 				inputFile_2;
+	AudioUnit 					fileAU_2;
 } AUGraphPlayer;
 
-void CreateAUGraph(AUGraphPlayer *player);
+typedef struct AUGraphNodes
+{
+	AUNode outputNode;
+	AUNode filePlayer1Node;
+	AUNode filePlayer2Node;
+};
 
+
+void CreateAUGraph(AUGraphPlayer *player);
+Float64 PrepareFileAU(AUGraphPlayer *player);
 #endif /* AUGraphPlayer_h */

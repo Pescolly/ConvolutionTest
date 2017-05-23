@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		58C6044CA8934FEA5FEE4831 /* Converter.c in Sources */ = {isa = PBXBuildFile; fileRef = 58C60412E0C076FF110D1110 /* Converter.c */; };
-		58C607DE0103AB58A45E4FFE /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 58C609B509AA442815347285 /* main.c */; };
 		58C60AA4164BBB59C7648582 /* AUGraphPlayer.c in Sources */ = {isa = PBXBuildFile; fileRef = 58C60E473DA14732B02C3E50 /* AUGraphPlayer.c */; };
+		C0241B351ED27629005FA126 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0241B341ED27629005FA126 /* main.swift */; };
+		C0241B4B1ED2AC29005FA126 /* ConvolutionUnitAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0241B3D1ED276B0005FA126 /* ConvolutionUnitAudioUnit.mm */; };
 		C0C209BD1ED170FD0091C7A9 /* CheckErrors.c in Sources */ = {isa = PBXBuildFile; fileRef = 58C609DF51936DFA85ED367E /* CheckErrors.c */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +35,12 @@
 		58C60D818A35C65B3D1E42F7 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		58C60DDE6A1E30C9FF7054CC /* AUGraphPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUGraphPlayer.h; sourceTree = "<group>"; };
 		58C60E473DA14732B02C3E50 /* AUGraphPlayer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = AUGraphPlayer.c; sourceTree = "<group>"; };
+		C0241B331ED27629005FA126 /* ConvolutionTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ConvolutionTest-Bridging-Header.h"; sourceTree = "<group>"; };
+		C0241B341ED27629005FA126 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		C0241B3C1ED276B0005FA126 /* ConvolutionUnitAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ConvolutionUnitAudioUnit.h; path = ../ConvolutionUnit/ConvolutionUnitAudioUnit.h; sourceTree = "<group>"; };
+		C0241B3D1ED276B0005FA126 /* ConvolutionUnitAudioUnit.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; name = ConvolutionUnitAudioUnit.mm; path = ../ConvolutionUnit/ConvolutionUnitAudioUnit.mm; sourceTree = "<group>"; };
 		C09733561ED14B36008A9C76 /* ConvolutionTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ConvolutionTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0A1E09E1ED40FD300A15DF2 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,14 +73,19 @@
 		C09733581ED14B36008A9C76 /* ConvolutionTest */ = {
 			isa = PBXGroup;
 			children = (
-				58C60CB964E27C9DDAA9B070 /* CheckErrors.h */,
+				C0A1E09E1ED40FD300A15DF2 /* BufferedAudioBus.hpp */,
+				C0241B3C1ED276B0005FA126 /* ConvolutionUnitAudioUnit.h */,
+				C0241B3D1ED276B0005FA126 /* ConvolutionUnitAudioUnit.mm */,
 				58C609DF51936DFA85ED367E /* CheckErrors.c */,
+				58C60CB964E27C9DDAA9B070 /* CheckErrors.h */,
 				58C609B509AA442815347285 /* main.c */,
 				58C60412E0C076FF110D1110 /* Converter.c */,
 				58C60654AD07DD0C545F4A82 /* Converter.h */,
 				58C60E473DA14732B02C3E50 /* AUGraphPlayer.c */,
 				58C60DDE6A1E30C9FF7054CC /* AUGraphPlayer.h */,
 				58C60D818A35C65B3D1E42F7 /* Constants.h */,
+				C0241B341ED27629005FA126 /* main.swift */,
+				C0241B331ED27629005FA126 /* ConvolutionTest-Bridging-Header.h */,
 			);
 			path = ConvolutionTest;
 			sourceTree = "<group>";
@@ -105,12 +116,14 @@
 		C097334E1ED14B36008A9C76 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "armen karamian";
 				TargetAttributes = {
 					C09733551ED14B36008A9C76 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 4R4KDM9Y6W;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -121,6 +134,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C097334D1ED14B36008A9C76;
 			productRefGroup = C09733571ED14B36008A9C76 /* Products */;
@@ -137,8 +151,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0241B4B1ED2AC29005FA126 /* ConvolutionUnitAudioUnit.mm in Sources */,
 				C0C209BD1ED170FD0091C7A9 /* CheckErrors.c in Sources */,
-				58C607DE0103AB58A45E4FFE /* main.c in Sources */,
+				C0241B351ED27629005FA126 /* main.swift in Sources */,
 				58C6044CA8934FEA5FEE4831 /* Converter.c in Sources */,
 				58C60AA4164BBB59C7648582 /* AUGraphPlayer.c in Sources */,
 			);
@@ -239,18 +254,27 @@
 		C097335E1ED14B36008A9C76 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 4R4KDM9Y6W;
 				GCC_C_LANGUAGE_STANDARD = c11;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ConvolutionTest/ConvolutionTest-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		C097335F1ED14B36008A9C76 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 4R4KDM9Y6W;
 				GCC_C_LANGUAGE_STANDARD = c11;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ConvolutionTest/ConvolutionTest-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
