@@ -42,11 +42,11 @@ const AudioUnitParameterID myParam1 = 0;
 	
 	AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32  sampleRate:44100 channels:2 interleaved:false];
 	
-	_inputBus.init(defaultFormat, 8);
+		//	_inputBus.init(defaultFormat, 8);
 	_outputBus = [[AUAudioUnitBus alloc] initWithFormat:defaultFormat error:nil];
 	
 		// Create the input and output bus arrays.
-	_inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
+		//	_inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
 	_outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses: @[_outputBus]];
 	
 	self.maximumFramesToRender = 512;
@@ -118,7 +118,22 @@ const AudioUnitParameterID myParam1 = 0;
 							  AURenderPullInputBlock pullInputBlock)
 	{
         // Do event handling and signal processing here.
-        
+		double j = 0;
+		double cycleLength = 44100.0 / 440;
+			//generate 440 hz tone and load into output bufferes
+		for (int frame = 0; frame < frameCount; ++frame)
+		{
+			Float32 *data = (Float32*)outputData->mBuffers[0].mData;
+			(data)[frame] = (Float32)sin (2 * M_PI * (j / cycleLength));
+
+				// copy to right channel too
+			data = (Float32*)outputData->mBuffers[1].mData;
+			(data)[frame] = (Float32)sin (2 * M_PI * (j / cycleLength));
+			
+				//advance cout
+			j += 1.0;
+			if (j > cycleLength) j -= cycleLength;
+		}
         return noErr;
     };
 }

@@ -37,7 +37,7 @@ import AVFoundation
 let engine = AVAudioEngine()
 
 var cd : AudioComponentDescription? = AudioComponentDescription()
-cd?.componentType = kAudioUnitType_Effect
+cd?.componentType = kAudioUnitType_Generator
 cd?.componentSubType = 0x636F6E76
 cd?.componentManufacturer = 0x6772706c
 cd?.componentFlags = 0
@@ -55,31 +55,41 @@ if let compDesc = cd {
 		engine.attach(convolutionUnit!)
 	})
 }
-
-do
+guard convUnit != nil else
 {
-	let format = engine.outputNode.inputFormat(forBus: 0)
+	print("convunit nil")
+	exit(999)
+}
 	let file1URL = NSURL(fileURLWithPath: "/Users/armen/Documents/440hz.aiff")
-	let file2URL = NSURL(fileURLWithPath: "/Users/armen/Documents/880hz.aiff")
-	
+//	let file2URL = NSURL(fileURLWithPath: "/Users/armen/Documents/880hz.aiff")
+//
 	let file1 = try AVAudioFile(forReading: file1URL as URL)
-	let file2 = try AVAudioFile(forReading: file2URL as URL)
-
+//	let file2 = try AVAudioFile(forReading: file2URL as URL)
+//
 	let file1Node = AVAudioPlayerNode()
-	let file2Node = AVAudioPlayerNode()
-
+//	let file2Node = AVAudioPlayerNode()
+//
 
 	engine.attach(file1Node)
+
+	let format = engine.outputNode.inputFormat(forBus: 0)
+
+
+
 	
-	engine.connect(file1Node, to: convUnit!, format: format)
 //	engine.connect(file1Node, to: convUnit!, fromBus: 0, toBus: 0, format: format)
-//	engine.connect(file2Node, to: convUnit!, fromBus: 0, toBus: 1, format: format)
+	engine.connect(convUnit!, to: engine.outputNode, fromBus: 0, toBus: 0, format: format)
 
 //	let buffer1 = AVAudioPCMBuffer(pcmFormat: file1.processingFormat, frameCapacity: AVAudioFrameCount(file1.length))
 //	let buffer2 = AVAudioPCMBuffer(pcmFormat: file2.processingFormat, frameCapacity: AVAudioFrameCount(file2.length))
 //	file1Node.scheduleBuffer(buffer1, completionHandler: nil)
 //	file2Node.scheduleBuffer(buffer2, completionHandler: nil)
-
+do
+{
+	try engine.start()
+	sleep(UInt32(10))
 }
-
-print("this is the main")
+catch
+{
+	assertionFailure("AVAudioEngine start error: \(error)")
+}
