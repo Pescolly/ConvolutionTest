@@ -108,7 +108,9 @@ const AudioUnitParameterID myParam1 = 0;
 - (AUInternalRenderBlock)internalRenderBlock
 {
     // Capture in locals to avoid ObjC member lookups. If "self" is captured in render, we're doing it wrong. See sample code.
-    
+
+		//	__block BufferedInputBus *input = &_inputBus;
+	
     return ^AUAudioUnitStatus(AudioUnitRenderActionFlags *actionFlags,
 							  const AudioTimeStamp *timestamp,
 							  AVAudioFrameCount frameCount,
@@ -117,18 +119,44 @@ const AudioUnitParameterID myParam1 = 0;
 							  const AURenderEvent *realtimeEventListHead,
 							  AURenderPullInputBlock pullInputBlock)
 	{
-        // Do event handling and signal processing here.
+		AudioUnitRenderActionFlags pullFlags = 0;
+		/*
+		 Important:
+		 If the caller passed non-null output pointers (outputData->mBuffers[x].mData), use those.
+		 
+		 If the caller passed null output buffer pointers, process in memory owned by the Audio Unit
+		 and modify the (outputData->mBuffers[x].mData) pointers to point to this owned memory.
+		 The Audio Unit is responsible for preserving the validity of this memory until the next call to render,
+		 or deallocateRenderResources is called.
+		 
+		 If your algorithm cannot process in-place, you will need to preallocate an output buffer
+		 and use it here.
+		 
+		 See the description of the canProcessInPlace property.
+		 */
+		
+			// If passed null output buffer pointers, process in-place in the input buffer.
+//		AudioBufferList *outAudioBufferList = outputData;
+//		if (outAudioBufferList->mBuffers[0].mData == nullptr)
+//		{
+//			for (UInt32 i = 0; i < outAudioBufferList->mNumberBuffers; ++i)
+//			{
+//				outAudioBufferList->mBuffers[i].mData = inAudioBufferList->mBuffers[i].mData;
+//			}
+//		}
+		
+        // test sin wave render
 		double j = 0;
 		double cycleLength = 44100.0 / 440;
 			//generate 440 hz tone and load into output bufferes
 		for (int frame = 0; frame < frameCount; ++frame)
 		{
-			Float32 *data = (Float32*)outputData->mBuffers[0].mData;
-			(data)[frame] = (Float32)sin (2 * M_PI * (j / cycleLength));
+			Float32 value = (Float32) sin(2 * M_PI * (j / cycleLength));
+			outputData->mBuffers[0].mData = &value;
 
 				// copy to right channel too
-			data = (Float32*)outputData->mBuffers[1].mData;
-			(data)[frame] = (Float32)sin (2 * M_PI * (j / cycleLength));
+//			data = (Float32*)outputData->mBuffers[1].mData;
+//			(data)[frame] = (Float32) sin(2 * M_PI * (j / cycleLength));
 			
 				//advance cout
 			j += 1.0;

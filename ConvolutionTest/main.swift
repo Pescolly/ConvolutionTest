@@ -35,11 +35,12 @@ import AVFoundation
 
 
 let engine = AVAudioEngine()
+let format = engine.outputNode.inputFormat(forBus: 0)
 
 var cd : AudioComponentDescription? = AudioComponentDescription()
 cd?.componentType = kAudioUnitType_Generator
-cd?.componentSubType = 0x636F6E76
-cd?.componentManufacturer = 0x6772706c
+cd?.componentSubType = 0x636F6E76 				// 'conv'
+cd?.componentManufacturer = 0x6772706c			// 'grpl'
 cd?.componentFlags = 0
 cd?.componentFlagsMask = 0
 
@@ -72,7 +73,7 @@ guard convUnit != nil else
 
 	engine.attach(file1Node)
 
-	let format = engine.outputNode.inputFormat(forBus: 0)
+
 
 
 
