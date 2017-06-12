@@ -25,7 +25,8 @@ const AudioUnitParameterID myParam1 = 0;
 
 @implementation ConvolutionUnitAudioUnit
 {
-	BufferedInputBus _inputBus;
+	BufferedInputBus _inputBus1;
+	BufferedInputBus _inputBus2;
 }
 
 @synthesize parameterTree = _parameterTree;
@@ -42,15 +43,15 @@ const AudioUnitParameterID myParam1 = 0;
 	
 	AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32  sampleRate:44100 channels:2 interleaved:false];
 	
-		//	_inputBus.init(defaultFormat, 8);
+	_inputBus1.init(defaultFormat, 2);
+	_inputBus2.init(defaultFormat, 2);
 	_outputBus = [[AUAudioUnitBus alloc] initWithFormat:defaultFormat error:nil];
 	
 		// Create the input and output bus arrays.
-		//	_inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
+	_inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus1.bus, _inputBus2.bus]];
 	_outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses: @[_outputBus]];
 	
 	self.maximumFramesToRender = 512;
-    
     return self;
 }
 
@@ -59,7 +60,7 @@ const AudioUnitParameterID myParam1 = 0;
 // If an audio unit has input, an audio unit's audio input connection points.
 // Subclassers must override this property getter and should return the same object every time.
 // See sample code.
-- (AUAudioUnitBusArray *)inputBusses
+- (AUAudioUnitBusArray *) inputBusses
 {
 #warning implementation must return non-nil AUAudioUnitBusArray
     return _inputBusArray;
@@ -68,7 +69,7 @@ const AudioUnitParameterID myParam1 = 0;
 // An audio unit's audio output connection points.
 // Subclassers must override this property getter and should return the same object every time.
 // See sample code.
-- (AUAudioUnitBusArray *)outputBusses
+- (AUAudioUnitBusArray *) outputBusses
 {
 #warning implementation must return non-nil AUAudioUnitBusArray
     return _outputBusArray;
@@ -147,20 +148,24 @@ const AudioUnitParameterID myParam1 = 0;
 		
         // test sin wave render
 		double j = 0;
-		double cycleLength = 44100.0 / 440;
+		double cycleLength = 44100.0 / 40000;
+		float angleDelta = cycleLength * 2.0 * M_PI;
 			//generate 440 hz tone and load into output bufferes
 		for (int frame = 0; frame < frameCount; ++frame)
 		{
-			Float32 value = (Float32) sin(2 * M_PI * (j / cycleLength));
-			outputData->mBuffers[0].mData = &value;
+			Float32 * buff[frameCount];
+			outputData->mBuffers[0].mData = buff;
+			Float32 *data = (Float32*)outputData->mBuffers[0].mData;
+			(data)[frame] = (Float32) sin(j);
 
-				// copy to right channel too
-//			data = (Float32*)outputData->mBuffers[1].mData;
-//			(data)[frame] = (Float32) sin(2 * M_PI * (j / cycleLength));
+			Float32 * buff2[frameCount];
+			outputData->mBuffers[1].mData = buff2;
+			Float32 *data2 = (Float32*)outputData->mBuffers[1].mData;
+			(data2)[frame] = (Float32) sin(j);
+
 			
 				//advance cout
-			j += 1.0;
-			if (j > cycleLength) j -= cycleLength;
+			j += angleDelta;
 		}
         return noErr;
     };
